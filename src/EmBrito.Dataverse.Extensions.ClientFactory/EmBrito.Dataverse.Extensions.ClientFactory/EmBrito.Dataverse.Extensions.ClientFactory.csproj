@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  
+    <!-- nuget package metadata starts -->
+	<Version>0.0.1</Version>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Authors>Emerson Brito</Authors>
+	<Owners>emerbrito</Owners>
+	<Description>Reduces the number of time new connections to a dataverse instance needs to be opened introducing the concept of connection pooling to ServiceClient (Microsoft.PowerPlatform.Dataverse.Client).</Description>
+	<Copyright>© Emerson Brito. All rights reserved.</Copyright>
+	<PackageProjectUrl>https://github.com/emerbrito/dataverse-client-factory</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/emerbrito/dataverse-client-factory</RepositoryUrl>
+	<PackageTags>dataverse;dynamics;commondataservice;cds;powerapps,powerplatform;serviceclient;sdk</PackageTags>
+	<PackageReleaseNotes>
+		0.0.1:
+		Initial release.
+	</PackageReleaseNotes>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	<PackageReadmeFile></PackageReadmeFile>	  
+	  
+	<!-- nuget package metadata ends -->
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.0.26" />
+  </ItemGroup>
+
+</Project>
