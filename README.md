@@ -1,4 +1,9 @@
-# DataverseClientFactory and Connection Pooling
+# EmBrito.Dataverse.Extensions.ClientFactory
+
+[![Nuget](https://img.shields.io/nuget/v/EmBrito.Dataverse.Extensions.ClientFactory)](https://www.nuget.org/packages/EmBrito.Dataverse.Extensions.ClientFactory)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/emerbrito/dataverse-client-factory/dotnet-build.yml)](https://github.com/emerbrito/dataverse-client-factory/actions/workflows/dotnet-build.yml)
+
+## DataverseClientFactory and Connection Pooling
 
 The `DataverseClientFactory` helps minimize the cost of openning or cloning Dataverse connections through connection pooling.
 
