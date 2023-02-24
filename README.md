@@ -7,9 +7,9 @@
 
 The `DataverseClientFactory` helps minimize the cost of openning or cloning Dataverse connections through connection pooling.
 
-> For the sake of this article, "connection" refers to a connected [ServiceClient][1] instance (which can be used interchangeably anywhere an [IOrganizationServiceAsync2][4] is used).
+> In this article, the term "connection" refers to a connected [ServiceClient][1] instance (which can be used interchangeably anywhere an [IOrganizationService][5] or  [IOrganizationServiceAsync2][4] is used).
 
-Whenever a user requests a new connection, the pooler looks for an available connection in the pool. If a pooled connection is available it returns in instead of opening a new one. When the application calls `Dispose` in the connection, the pooler returns it to the set of pooled connections instead of actually closing it. Once the connection is available in the pool it is ready to be used again.
+Whenever a user requests a new connection, the pooler looks for an available connection in the pool. If a pooled connection is available it returns it instead of opening a new one. When the application calls `Dispose` in the connection, the pooler returns it to the set of pooled connections instead of actually closing it. Once the connection is available in the pool it is ready to be used again.
 
 ``` mermaid
 sequenceDiagram
@@ -30,7 +30,7 @@ sequenceDiagram
     end    
 ```
 
-In the real world each application is different and the impact or performance gain will depend on the application however, any applicatio can benefit from the layer of abstraction provided by the `DataverseClientFactory`.
+In the real world each application is different and the impact or performance gain will depend on the application however, any application can benefit from the layer of abstraction provided by the `DataverseClientFactory`.
 
 ## IDataverseClient
 
@@ -46,7 +46,7 @@ public interface IDataverseClient : IOrganizationServiceAsync2, IDisposable
 }
 ```
 
-With the exception of the `Dispose` method, when refactoring your code you should be able to replace any instances of `IDataverseClient` with `IOrganizationServiceAsync2`.
+With the exception of the `Dispose` method, when refactoring your code you should be able to replace any instances of `IDataverseClient` with `IOrganizationServiceAsync2` and vice versa.
 
 ## Using the DataverseClientFactory
 
@@ -70,7 +70,7 @@ using (var client = factory.CreateClient())
 }
 ``` 
 
-> You should always dispose of the connection when it is no longer required so that the connection will be returned to the pool. You cna do this by calling the `Dispose` method or by opening the connection inside a using statement. Connections that are not explicitely disposed are not returned to the connection pool.
+> You should always dispose of the connection when it is no longer required so that the connection will be returned to the pool. You can do this by calling the `Dispose` method or by opening the connection inside a using statement. Connections that are not explicitely disposed are not returned to the connection pool.
 
 ## Dependency Injection
 
@@ -109,7 +109,7 @@ public class MyCustomService
 
 ### Injecting an IDataverseClient
 
-In some cases, depending on your application architecture you can inject an `IDataverseClient` instead of the factory and still leverage connection pooling since a container is responsible for cleanup of types it creates, and calls Dispose on IDisposable instances.
+In some cases, depending on your application architecture you can inject an `IDataverseClient` instead of the factory and still leverage connection pooling since a container is responsible for the cleaning up of types it creates and will call Dispose on IDisposable instances.
 
 Here is an example:
 
@@ -150,9 +150,10 @@ public class MyCustomService
 
 ## Connecting to Multiple Dataverse Instances
 
-Create specialized classes to handle connection to different dataverse instances by deriving from `DataverseClientFactory` as demonstrated below.
+To handle connections to different dataverse instances you can create specialized factories that derives from `DataverseClientFactory` as demonstrated below.
+These are meant to take in connection parameteres that are specific to each instance.
 
-Specialized factories
+Creating two specialized factories:
 
 ``` csharp
 public class ContosoClientFacotry : DataverseClientFactory
@@ -188,9 +189,9 @@ using (var fabrikamClient = fabrikamFactory.CreateClient())
 
 ## Under the Hood: IDataverseClient
 
-When `DataverseClientFactory.CreateClient()` is called, an `IDataverseClient` is returned but what is it anyway?
+When `DataverseClientFactory.CreateClient()` is called, an `IDataverseClient`?
 
-The returned `IDataverseClient` is the an actual instance of the [ServiceClient][1] wraped by a [DispatchProxy][3]. The [dispatchProxy][3] allow us to intercept and repurpose calls to `Dispose`.
+The `IDataverseClient` is an instance of the [ServiceClient][1] wraped by a [DispatchProxy][3]. The [dispatchProxy][3] allow us to intercept and repurpose calls to `Dispose`.
 
 ## Benchmarks
 
@@ -224,3 +225,4 @@ Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
 [2]: https://learn.microsoft.com/en-us/dotnet/api/microsoft.powerplatform.dataverse.client.serviceclient.clone?view=dataverse-sdk-latest#microsoft-powerplatform-dataverse-client-serviceclient-clone
 [3]: https://learn.microsoft.com/en-us/dotnet/api/system.reflection.dispatchproxy?view=net-6.0
 [4]: https://learn.microsoft.com/en-us/dotnet/api/microsoft.powerplatform.dataverse.client.iorganizationserviceasync2?view=dataverse-sdk-latest
+[5]: https://learn.microsoft.com/en-us/dotnet/api/microsoft.xrm.sdk.iorganizationservice?view=dataverse-sdk-latest
