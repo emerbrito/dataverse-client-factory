@@ -189,8 +189,6 @@ using (var fabrikamClient = fabrikamFactory.CreateClient())
 
 ## Under the Hood: IDataverseClient
 
-When `DataverseClientFactory.CreateClient()` is called, an `IDataverseClient`?
-
 The `IDataverseClient` is an instance of the [ServiceClient][1] wraped by a [DispatchProxy][3]. The [dispatchProxy][3] allow us to intercept and repurpose calls to `Dispose`.
 
 ## Benchmarks
